@@ -2,6 +2,8 @@
 
 Hands-on lab: search a food, fetch JSON from an API, parse it, and render a nutrition card.
 
+Graded work lives in [assignments/](assignments/README.md). This lab is the walkthrough.
+
 **Time:** about 3 hours
 **Level:** beginners who know HTML, CSS, and basic JavaScript
 **API:** Edamam Nutrition Analysis API

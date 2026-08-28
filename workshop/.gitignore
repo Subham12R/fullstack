@@ -1,5 +1,6 @@
 # API keys
 demo/js/config.js
+class/js/config.js
 
 # OS
 .DS_Store

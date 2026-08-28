@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Analyzer</title>
+    <link rel="stylesheet" href="css/style.css">
+  
+</head>
+<body>
+    <div class="page">
+        <header class="hero">
+            <h1>
+                Nutrition Analyzer
+            </h1>
+            <p>
+                Analyze the nutrition of your food
+            </p>
+        </header>
+
+
+        <section class="content">
+            <form id="nutrition-form" class="nutrition-form">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="food-name">Food Name</label>
+                        <input type="text" id="food-name" name="food-name" placeholder="Enter the name of the food">
+                    </div>
+                    <div class="form-group">
+                        <label for="food-qty">Food Qty</label>
+                        <input type="number" id="food-qty" name="food-qty" placeholder="Enter the quantity of the food">
+                    </div>
+                </div>
+                <button type="submit" id="analyze-button" class="analyze-button">Analyze</button>
+            </form>
+        </section>
+        <main class="result" id="result" >
+            
+        </main>
+    
+    </div>
+    <script src="js/config.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
