@@ -1,6 +1,7 @@
 // Step 1: Get the HTML elements we need
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
+const quantityInput = document.getElementById('quantity-input');
 const loadingEl = document.getElementById('loading');
 const errorEl = document.getElementById('error');
 const errorTextEl = document.getElementById('error-text');
@@ -11,17 +12,23 @@ searchForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
   const foodName = searchInput.value.trim();
-  if (!foodName) return;
+  const quantity = Number(quantityInput.value);
 
-  searchFood(foodName);
+  if (!foodName) return;
+  if (!quantity || quantity <= 0) {
+    showError('Enter a quantity greater than 0.');
+    return;
+  }
+
+  searchFood(foodName, quantity);
 });
 
 // Step 3: Main function - fetch data, parse it, show the card
-async function searchFood(foodName) {
+async function searchFood(foodName, quantity) {
   showLoading();
 
   try {
-    const rawData = await fetchNutrition(foodName);
+    const rawData = await fetchNutrition(foodName, quantity);
     const nutrition = parseNutrition(rawData);
 
     if (!nutrition) {
@@ -38,7 +45,7 @@ async function searchFood(foodName) {
 }
 
 // Step 4: Call the Edamam Nutrition Analysis API and get JSON back
-async function fetchNutrition(foodName) {
+async function fetchNutrition(foodName, quantity) {
   if (
     API_CONFIG.APP_ID === 'YOUR_APP_ID_HERE' ||
     API_CONFIG.API_KEY === 'YOUR_API_KEY_HERE'
@@ -46,10 +53,11 @@ async function fetchNutrition(foodName) {
     throw new Error('Add your Edamam API keys in js/config.js');
   }
 
+  const ingredient = quantity + ' ' + foodName;
   const baseUrl = 'https://api.edamam.com/api/nutrition-data';
   const url = baseUrl
     + '?nutrition-type=logging'
-    + '&ingr=' + encodeURIComponent('1 ' + foodName)
+    + '&ingr=' + encodeURIComponent(ingredient)
     + '&app_id=' + API_CONFIG.APP_ID
     + '&app_key=' + API_CONFIG.API_KEY;
 
@@ -117,6 +125,7 @@ function showCard(nutrition) {
     + '<strong>' + formatNumber(nutrition.calories) + ' kcal</strong>'
     + '</div>'
     + '<div class="nutrients">'
+    + nutrientItem('Quantity', nutrition.quantity, nutrition.measure || '', 'quantity')
     + nutrientItem('Weight', nutrition.weight, 'g', 'weight')
     + nutrientItem('Protein', nutrition.protein, 'g', 'protein')
     + nutrientItem('Carbs', nutrition.carbs, 'g', 'carbs')
@@ -129,10 +138,14 @@ function showCard(nutrition) {
 }
 
 function nutrientItem(label, value, unit, type) {
+  const display = unit
+    ? formatNumber(value) + ' ' + unit
+    : formatNumber(value);
+
   return ''
     + '<div class="nutrient nutrient--' + type + '">'
     + '<span>' + label + '</span>'
-    + '<strong>' + formatNumber(value) + ' ' + unit + '</strong>'
+    + '<strong>' + display + '</strong>'
     + '</div>';
 }
 
@@ -188,6 +201,15 @@ function loadFromStorage() {
   if (!saved) return;
 
   const nutrition = JSON.parse(saved);
+
+  if (nutrition.quantity) {
+    quantityInput.value = nutrition.quantity;
+  }
+
+  if (nutrition.name) {
+    searchInput.value = nutrition.name.toLowerCase();
+  }
+
   showCard(nutrition);
 }
 

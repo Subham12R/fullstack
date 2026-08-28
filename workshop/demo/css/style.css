@@ -92,11 +92,28 @@ h1 {
 
 .search-row {
   display: flex;
+  align-items: flex-end;
   gap: 0.75rem;
 }
 
-input[type="text"] {
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field--quantity {
+  width: 6.5rem;
+  flex-shrink: 0;
+}
+
+.field--food {
   flex: 1;
+  min-width: 0;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
   min-width: 0;
   padding: 0.9rem 1rem;
   border: 1px solid var(--border);
@@ -111,7 +128,8 @@ input[type="text"]::placeholder {
   color: #8a968a;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="number"]:focus {
   outline: none;
   border-color: #8fd0ad;
   background: var(--surface);
@@ -120,6 +138,7 @@ input[type="text"]:focus {
 
 button {
   padding: 0.9rem 1.25rem;
+  height: 3.15rem;
   border: none;
   border-radius: var(--radius-sm);
   background: var(--primary);
@@ -140,7 +159,8 @@ button:active {
 }
 
 button:focus-visible,
-input[type="text"]:focus-visible {
+input[type="text"]:focus-visible,
+input[type="number"]:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
@@ -292,6 +312,16 @@ input[type="text"]:focus-visible {
   letter-spacing: -0.02em;
 }
 
+.nutrient--quantity {
+  background: #f4f7ff;
+  border-color: #dbe4ff;
+}
+
+.nutrient--weight {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
 
 
 @media (max-width: 560px) {
@@ -301,8 +331,11 @@ input[type="text"]:focus-visible {
 
   .search-row {
     flex-direction: column;
+    align-items: stretch;
   }
 
+  .field--quantity,
+  .field--food,
   button {
     width: 100%;
   }
